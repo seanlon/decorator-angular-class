@@ -1,3 +1,6 @@
+
+import {  BaseComponent } from './base.component';
+
 // extend base class
 // override constructor to call super
 // inject in angular 
@@ -8,6 +11,10 @@ export function ClassAbcDescriptor(message) {
     }
 } 
 
+// how extend parent
+// how invoke super 
+// how access injector
+// how put new injector?
 export function CustomComponent(options) {
   return (target) => {
     const original = target;
@@ -16,7 +23,9 @@ export function CustomComponent(options) {
       const c: any = function childConstuctor() {
           console.log('arguments',arguments);
           console.log('this',this);
-        return original.apply(this, arguments);
+
+         return BaseComponent.apply(this,arguments);
+        // return original.apply(this, arguments);
       };
       c.prototype = Object.create(original.prototype);
       const instance = new c(...args);
@@ -26,11 +35,14 @@ export function CustomComponent(options) {
       return instance;
     };
 
-    newConstructor.prototype = Object.create(target.prototype);
+    newConstructor.prototype = Object.create(target.prototype); 
+    
     return newConstructor;
   }
+ 
 }
 
+ 
 interface Newable<T> {
     new (...args: any[]): T;
 }
